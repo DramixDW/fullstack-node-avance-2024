@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./banane/css/style.css">
+    <title>Ma super liste de film :)</title>
+</head>
+<body>
+    <h1> 
+        Ma vidéothèque
+    </h1>
+    <ul>
+        {{#movies}}
+            <li class="{{#isChartreuse}} {{ index }} {{/isChartreuse}}">
+                {{title}} {{author}}
+            </li>
+        {{/movies}} 
+    </ul>
+</body>
+</html>

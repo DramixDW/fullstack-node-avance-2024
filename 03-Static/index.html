@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./banane/css/style.css">
+    <title>Mon super site statique :)</title>
+</head>
+<body>
+   <h1>
+        Lorem, ipsum dolor.
+   </h1> 
+   <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus dicta quae expedita id reiciendis dolorum assumenda eos nisi magnam esse, tenetur repellendus distinctio. In odio quia sed distinctio quidem iusto?
+   </p>
+</body>
+<script>
+     let randomBoolean = false;
+     setInterval(() => {
+          document.getElementsByTagName('body')[0].style.backgroundColor = randomBoolean ? 'fuchsia' : 'chartreuse';
+          document.getElementsByTagName('body')[0].style.color = randomBoolean ? 'chartreuse' : 'fuchsia';
+          document.getElementsByTagName('p')[0].style.transform = 'rotate(' + Math.ceil(Math.random() * 360) + 'deg)';
+          document.getElementsByTagName('h1')[0].style.marginLeft = Math.ceil(Math.random() * 1920) + 'px';
+          randomBoolean = !randomBoolean;
+     }, 100)
+</script>
+</html>
