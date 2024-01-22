@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma liste de son</title>
+</head>
+<body>
+    <ul>
+        {{#sounds}}
+            <li>{{name}} <button data-id={{id}}>delete</button></li>
+        {{/sounds}}
+    </ul>
+</body>
+<script>
+    const buttons = document.querySelectorAll("[data-id]");
+    for (const button of buttons) {
+        button.addEventListener("click", (event) => {
+            const id = event.target.getAttribute('data-id');
+            fetch(`http://localhost:8081/sounds/${id}`, {
+                method: 'DELETE',
+            }).then(() => {
+                // location.href = url de la page actuel
+                location.href = location.href;
+            })
+        })
+    }
+</script>
+</html>

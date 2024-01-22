@@ -31,8 +31,6 @@ application.get('/', (request, response) => {
     });
 })
 
-
-
 application.listen(8001, () => {
     console.log('1,2,3 Soleil !')
 })

@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
+import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 
 async function readFileAndParseAsJson(fileName: string) {
     const stringifiedData = await readFile(`./Data/${fileName}.json`, 'utf8');
@@ -16,7 +17,8 @@ export async function getAll(modelName: string) {
 
 export async function getById(modelName: string, id: string) {
     const sounds = await readFileAndParseAsJson(modelName);
-    return sounds.find((obj: { id: number }) => obj.id === Number(id)); 
+    const foundEntity = sounds.find((obj: { id: number }) => obj.id === Number(id)); 
+    return foundEntity;
 }
 
 export async function insert(modelName: string, body: Object) {
@@ -32,4 +34,11 @@ export async function replace(modelName: string, id: string, body: Object) {
     data[replaceIndex] = body;
     await stringifyJsonAndOverWrite(modelName, data);
     return body;
+}
+
+export async function deleteEntity (modelName: string, id: string) {
+    const data = await readFileAndParseAsJson(modelName);
+    const toDeleteIndex = data.findIndex((obj: { id: number }) => obj.id === Number(id));
+    data.splice(toDeleteIndex, 1);
+    await stringifyJsonAndOverWrite(modelName, data);
 }
