@@ -18,6 +18,9 @@ export async function getAll(modelName: string) {
 export async function getById(modelName: string, id: string) {
     const sounds = await readFileAndParseAsJson(modelName);
     const foundEntity = sounds.find((obj: { id: number }) => obj.id === Number(id)); 
+    if (!foundEntity) {
+        throw new EntityNotFoundError();
+    }
     return foundEntity;
 }
 
@@ -34,6 +37,17 @@ export async function replace(modelName: string, id: string, body: Object) {
     data[replaceIndex] = body;
     await stringifyJsonAndOverWrite(modelName, data);
     return body;
+}
+
+export async function update (modelName: string, id: string, body: Object) {
+    const data = await readFileAndParseAsJson(modelName);
+    const updateIndex = data.findIndex((obj: { id: number}) => obj.id === Number(id));
+    if (updateIndex === -1) {
+        throw new EntityNotFoundError();
+    }
+    data[updateIndex] = { ...data[updateIndex], ...body };
+    await stringifyJsonAndOverWrite(modelName, data);
+    return data[updateIndex];
 }
 
 export async function deleteEntity (modelName: string, id: string) {

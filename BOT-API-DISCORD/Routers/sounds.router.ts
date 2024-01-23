@@ -27,6 +27,7 @@ soundRouter.get('/:id', createAuthorizeMiddleWare([]), async (request: Request, 
 })
 
 soundRouter.post('/', createAuthorizeMiddleWare(["Admin"]), async (request, response) => {
+    console.log(request.body);
     response.send(await insert('sounds', request.body));
 })
 

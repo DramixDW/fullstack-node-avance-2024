@@ -7,6 +7,7 @@ import { notFoundErrorHandler } from "./Error-Handler/not-found-error.handler";
 import { EntityNotFoundError } from "./Errors/entity-not-found.error";
 import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
+import { userRouter } from "./Routers/users.router";
 
 
 const application: Application = express();
@@ -18,7 +19,7 @@ application.set('views', './Views');
 application.use(json());
 application.use(loggerMiddleware);
 application.use('/sounds', soundRouter);
-application.use('/sounds', notFoundErrorHandler);
+application.use('/users', userRouter);
 //override le comportement par défaut pour la 404
 application.use((request, response, next) => {
     throw new NotFoundError();

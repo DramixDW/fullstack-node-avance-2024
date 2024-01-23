@@ -8,7 +8,6 @@ export function notFoundErrorHandler(
     response: Response,
     next: NextFunction
 ) {
-    console.log("here");
     response.status(404);
     if (error instanceof EntityNotFoundError) {
         response.send('404 Entity Not Found');
