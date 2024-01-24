@@ -1,1 +1,4 @@
-[{"id":1,"name":"Applaudissements","file":"applause.mp3","category":"Réactions","tags":["applaudissements","public"],"favorite":true},{"id":4,"name":"Son de cloche","file":"bell.mp3","category":"Effets sonores","tags":["cloche","sonnerie"],"favorite":true},{"id":5,"name":"Cri de surprise","file":"surprise.mp3","category":"Réactions","tags":["surprise","étonnement"],"favorite":true}]
+[
+    {"id":1,"name":"Applaudissements","file":"applause.mp3","category":"Réactions","tags":["applaudissements","public"],"favorite":true},
+    {"id":4,"name":"Son de cloche","file":"bell.mp3","category":"Effets sonores","tags":["cloche","sonnerie"],"favorite":true},
+    {"id":5,"name":"Cri de surprise","file":"surprise.mp3","category":"Réactions","tags":["surprise","étonnement"],"favorite":true}]
