@@ -42,7 +42,7 @@ soundRouter.get('/:id', createAuthorizeMiddleWare([]), async (request: Request, 
 
 soundRouter.post('/',  configuredMulter.single('sound'), async (request, response) => {
     await insert('sounds', {
-        id: 42,
+        id: new Date().getTime(),
         name: request.body.name,
         category: request.body.category,
         file: request.file?.originalname,

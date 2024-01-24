@@ -17,7 +17,7 @@ export async function getAll(modelName: string) {
 
 export async function getById(modelName: string, id: string) {
     const sounds = await readFileAndParseAsJson(modelName);
-    const foundEntity = sounds.find((obj: { id: number }) => obj.id == Number(id)); 
+    const foundEntity = sounds.find((obj: { id: string }) => obj.id == id); 
     if (!foundEntity) {
         throw new EntityNotFoundError();
     }
@@ -33,8 +33,8 @@ export async function insert(modelName: string, body: Object) {
 
 export async function replace(modelName: string, id: string, body: Object) {
     const data = await readFileAndParseAsJson(modelName);
-    const replaceIndex = data.findIndex((obj: { id: number }) => {
-        return obj.id === Number(id);
+    const replaceIndex = data.findIndex((obj: { id: string }) => {
+        return obj.id === id;
     });
     data[replaceIndex] = body;
     console.log(data);
@@ -44,7 +44,7 @@ export async function replace(modelName: string, id: string, body: Object) {
 
 export async function update (modelName: string, id: string, body: Object) {
     const data = await readFileAndParseAsJson(modelName);
-    const updateIndex = data.findIndex((obj: { id: number}) => obj.id === Number(id));
+    const updateIndex = data.findIndex((obj: { id: string}) => obj.id === id);
     if (updateIndex === -1) {
         throw new EntityNotFoundError();
     }
@@ -55,7 +55,7 @@ export async function update (modelName: string, id: string, body: Object) {
 
 export async function deleteEntity (modelName: string, id: string) {
     const data = await readFileAndParseAsJson(modelName);
-    const toDeleteIndex = data.findIndex((obj: { id: number }) => obj.id === Number(id));
+    const toDeleteIndex = data.findIndex((obj: { id: string }) => obj.id === id);
     data.splice(toDeleteIndex, 1);
     await stringifyJsonAndOverWrite(modelName, data);
 }
