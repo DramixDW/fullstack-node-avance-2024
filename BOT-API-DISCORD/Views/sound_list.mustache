@@ -8,9 +8,46 @@
 <body>
     <ul>
         {{#sounds}}
-            <li>{{name}} <button data-id={{id}}>delete</button></li>
+            <li>
+                {{name}} <button data-id={{id}}>delete</button>
+                <form action="/sounds/{{id}}" enctype="multipart/form-data" method="post">
+                    <div>
+                        <input type="hidden" name="name" value="{{name}}">
+                        <input type="hidden" name="category" value="{{category}}">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <div>
+                            <label for="sound">Son</label>
+                            <input type="file" name="sound" id="sound" accept="audio/*">
+                        </div>
+                        <button type="submit">mettre à jour</button>
+                    </div>    
+                </form>
+                <audio src="/static/{{file}}" controls>
+                    Unsupported
+                </audio>     
+            </li>
         {{/sounds}}
     </ul>
+    <h2 class="g2">
+        Mon Super formulaire de création
+    </h2>
+    <form action="/sounds/" enctype="multipart/form-data" method="post">
+        <div>
+            <div>
+                <label for="name">Nom</label>
+                <input type="text" name="name" id="name">
+            </div>
+            <div>
+                <label for="category">Catégorie</label>
+                <input type="text" name="category" id="category">
+            </div>
+            <div>
+                <label for="sound">Son</label>
+                <input type="file" name="sound" id="sound" accept="audio/*">
+            </div>
+            <button type="submit">Valider</button>
+        </div>    
+    </form>
 </body>
 <script>
     const buttons = document.querySelectorAll("[data-id]");

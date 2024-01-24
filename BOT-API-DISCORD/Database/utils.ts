@@ -17,7 +17,7 @@ export async function getAll(modelName: string) {
 
 export async function getById(modelName: string, id: string) {
     const sounds = await readFileAndParseAsJson(modelName);
-    const foundEntity = sounds.find((obj: { id: number }) => obj.id === Number(id)); 
+    const foundEntity = sounds.find((obj: { id: number }) => obj.id == Number(id)); 
     if (!foundEntity) {
         throw new EntityNotFoundError();
     }
@@ -33,8 +33,11 @@ export async function insert(modelName: string, body: Object) {
 
 export async function replace(modelName: string, id: string, body: Object) {
     const data = await readFileAndParseAsJson(modelName);
-    const replaceIndex = data.findIndex((obj: { id: number }) => obj.id === Number(id));
+    const replaceIndex = data.findIndex((obj: { id: number }) => {
+        return obj.id === Number(id);
+    });
     data[replaceIndex] = body;
+    console.log(data);
     await stringifyJsonAndOverWrite(modelName, data);
     return body;
 }

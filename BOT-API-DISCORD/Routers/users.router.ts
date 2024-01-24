@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { deleteEntity, getAll, getById, insert, replace, update } from "../Database/utils";
-import { request } from "http";
+import { deleteEntity, getAll, getById, insert, update } from "../Database/utils";
 
 export const userRouter = Router();
 
