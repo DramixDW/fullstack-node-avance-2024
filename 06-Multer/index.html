@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My images</title>
+</head>
+<body>
+   <form action="/upload_file" enctype="multipart/form-data" method="post">
+        <div>
+            <label for="file">Ma nouvelle image</label>
+            <input type="file" name="my_super_file" id="file">
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+        </div>
+        <button type="submit">
+            Envoyer le fichier
+        </button>
+   </form> 
+</body>
+</html>
