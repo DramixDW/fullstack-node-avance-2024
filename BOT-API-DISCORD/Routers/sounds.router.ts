@@ -3,6 +3,7 @@ import { deleteEntity, getAll, getById, insert, replace } from "../Database/util
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
+import { check } from 'express-validator';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -40,7 +41,7 @@ soundRouter.get('/:id', createAuthorizeMiddleWare([]), async (request: Request, 
     response.send(sound);
 })
 
-soundRouter.post('/',  configuredMulter.single('sound'), async (request, response) => {
+soundRouter.post('/', configuredMulter.single('sound'), async (request, response) => {
     await insert('sounds', {
         id: new Date().getTime(),
         name: request.body.name,

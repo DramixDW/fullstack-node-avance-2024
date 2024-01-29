@@ -1,0 +1,15 @@
+{
+    "configurations": [{
+        "type": "node",
+        "console": "integratedTerminal",
+        "request": "launch",
+        "name": "Debug",
+        "runtimeArgs": [
+            "-r",
+            "ts-node/register"
+        ],
+        "args": [
+            "${workspaceFolder}/BOT-API-DISCORD/index.ts"
+        ]
+    }],
+}
