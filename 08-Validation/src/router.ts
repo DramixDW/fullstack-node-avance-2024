@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, param, query } from "express-validator";
 import { ValidationMiddleware } from "./validation-middleware";
 
 const router = Router();
@@ -20,6 +20,29 @@ router.post('/movie',
 
     res.send("movie created");
 });
+
+// paramètre d'URL
+// 123e4567-e89b-12d3-a456-426614174000
+router.get('/movie/:id', param('id').isUUID(), ValidationMiddleware,(req, res) => {
+    // param :id
+    const param = req.params?.id;
+
+    console.log(param);
+
+    res.send({
+        title: "Jurassic Clark"
+    });
+});
+
+router.get('/movie', query('page').isInt().optional().toInt(), ValidationMiddleware ,(req, res) => {
+    const query = req.query;
+
+    console.log(query);
+
+    res.send({
+        title: 'Jurassic Pork'
+    });
+})
 
 export {
     router
