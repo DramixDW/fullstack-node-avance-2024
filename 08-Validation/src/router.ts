@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { body, param, query } from "express-validator";
+import { Router, Request, Response } from "express";
+import { body, checkSchema, param, query } from "express-validator";
 import { ValidationMiddleware } from "./validation-middleware";
 
 const router = Router();
@@ -10,10 +10,27 @@ const validation = [
     body('is_released', 'is_release doit être booléen').isBoolean().toBoolean()
 ];
 
+// version schéma objet
+const schema = checkSchema({
+    title: {
+        notEmpty: true,
+        errorMessage: 'Le titre est absent'
+    },
+    directors: {
+        isArray: true,
+        errorMessage: 'Les réalisateurs doivent être un tableau'
+    },
+    is_released: {
+        isBoolean: true,
+        toBoolean: true,
+        errorMessage: 'is_release doit être un booléen'
+    }
+});
+
 router.post('/movie',
-    ...validation, // middleware 1 next()    |
+    schema, // middleware 1 next()    |
     ValidationMiddleware, // middleware 2  <
-    (req, res) => { // middleware 3            <
+    (req: Request, res: Response) => { // middleware 3            <
     const body = req.body;
 
     console.log(body);
