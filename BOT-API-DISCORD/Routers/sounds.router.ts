@@ -3,7 +3,8 @@ import { deleteEntity, getAll, getById, insert, replace } from "../Database/util
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
-import { check } from 'express-validator';
+import { body, check } from 'express-validator';
+import { ValidationMiddleware } from "../Middlewares/validation.middleware";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -39,15 +40,39 @@ soundRouter.get('/:id', createAuthorizeMiddleWare([]), async (request: Request, 
         return next(new EntityNotFoundError('banane'));
     }
     response.send(sound);
-})
+});
 
-soundRouter.post('/', configuredMulter.single('sound'), async (request, response) => {
-    await insert('sounds', {
-        id: new Date().getTime(),
-        name: request.body.name,
-        category: request.body.category,
-        file: request.file?.originalname,
-    });
+const uploadValidation = [
+    body('name').notEmpty(),
+    body('category').notEmpty(),
+    // on vérifie que c'est un audio/mpeg => mp3
+    body('files.*.mimetype').isIn(['audio/mpeg'])
+];
+
+// array => multiple
+soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
+    // petit hack qui permet de valider avec express-validator. On met le file dans le body
+    req.body.files = req.files; // => tableau de fichiers 
+    // on passe à la suite => ...uploadValidation
+    next();
+} , ...uploadValidation, ValidationMiddleware, async (request, response) => {
+    // soit un objet de files, soit un tableau de files. On doit utiliser une assertion pour lui indiquer le bon type.
+    const files = request.files as Express.Multer.File[];
+
+    for (const file of files) {
+        // truc.mp3
+        const fileName = file.filename.split('.');
+        // => ['truc', 'mp3']
+        fileName.pop();
+        // => ['truc']
+        await insert('sounds', {
+            id: new Date().getTime(),
+            name: `${request.body.name}-${fileName.join('.')}`,
+            category: request.body.category,
+            file: file.originalname,
+        });
+    }
+
     response.redirect('/sounds/list');
 })
 
