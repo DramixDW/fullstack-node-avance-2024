@@ -1,4 +1,5 @@
 import Express from 'express';
+import { body, validationResult } from 'express-validator';
 
 async function init() {
     const express = Express();
@@ -6,10 +7,26 @@ async function init() {
     // parse json
     express.use(Express.json());
 
-    express.post('/movie', (req, res) => {
+    express.post('/movie', 
+        body('title').notEmpty()
+    , (req, res) => {
+        const result = validationResult(req);
+
+        const errors = result.array();
+
+        if (errors.length) {
+            // bad request
+            res.status(400);
+            return res.send({
+                errors
+            });
+        }
+
         const body = req.body;
 
         console.log(body);
+
+        res.send("movie created");
     });
 
     express.listen(5555, () => {
