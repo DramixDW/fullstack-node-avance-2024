@@ -8,6 +8,13 @@ import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
 
+// classes => PascalCase
+// function => camelCase
+// variable => camelCase
+// constantes => SCREAMING_SNAKE_CASE
+// fichiers => kebab | camelCase | Pascal | ...
+
+const PORT = 8081;
 
 const application: Application = express();
 
@@ -27,6 +34,7 @@ application.use((request, response, next) => {
 application.use(notFoundErrorHandler);
 application.use(internalServerErrorHandler);
 
-application.listen(8081, () => {
-    console.log('Prêt et à l\'écoute');
+
+application.listen(PORT, () => {
+    console.log(`Prêt et à l\'écoute sur http://localhost:${PORT}`);
 })
