@@ -18,7 +18,8 @@ export class Game {
     public declare id: number;
 
     @Column({
-        length: 128
+        length: 128,
+        unique: true
     })
     public declare title: string;
 
