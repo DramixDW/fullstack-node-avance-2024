@@ -5,6 +5,7 @@ import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
 import { body, check } from 'express-validator';
 import { ValidationMiddleware } from "../Middlewares/validation.middleware";
+import { rm } from "fs/promises";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

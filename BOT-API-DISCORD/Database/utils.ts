@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, rm, writeFile } from "fs/promises";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 
 async function readFileAndParseAsJson(fileName: string) {
@@ -56,6 +56,16 @@ export async function update (modelName: string, id: string, body: Object) {
 export async function deleteEntity (modelName: string, id: string) {
     const data = await readFileAndParseAsJson(modelName);
     const toDeleteIndex = data.findIndex((obj: { id: string }) => obj.id === id);
-    data.splice(toDeleteIndex, 1);
+    // le splice retourne ce qui a été supprimé
+    const deleted = data.splice(toDeleteIndex, 1);
     await stringifyJsonAndOverWrite(modelName, data);
+    // vu qu'il n'y a qu'un élément qui a été supp, on retourne l'élément supprimé 0
+    return deleted[0];
+}
+
+export async function deleteSound (id: string) {
+    const deleted = await deleteEntity('sound', id); // on supprime le son en DB
+    // pas oublier uploads/ devant
+    const deletedPath = `uploads/${deleted.file}`;
+    await rm(deletedPath);
 }
