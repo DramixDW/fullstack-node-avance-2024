@@ -1,4 +1,4 @@
-import { DataSource, In, IsNull, LessThan, Not, Raw } from "typeorm";
+import { DataSource, Equal, In, IsNull, LessThan, Not, Raw } from "typeorm";
 import { Game, GameType } from "./models/games";
 
 async function init() {
@@ -56,6 +56,27 @@ async function init() {
     });
 
     console.log(notFallout);
+
+    const heroesOfMightAndMagic = await manager.findOne(Game, {
+        where: {
+            title: Equal('heroes of might and magic IV')
+        }
+    });
+
+    console.log(heroesOfMightAndMagic);
+
+    // utile lors des paginations, renvoie le nombre total d'éléments matchés en 2e élément du tableau et en 1er le nombre d'éléments récupérés
+    const boomerGames = await manager.findAndCount(Game, {
+        where: {
+            releaseDate: LessThan( new Date('2000-01-01') )
+        },
+        // après le premier élément
+        skip: 1,
+        // prends en 1 !
+        take: 1
+    });
+
+    console.log('boomer games', boomerGames);
     
 
     console.log("Connected");
