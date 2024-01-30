@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { deleteEntity, deleteSound, getAll, getById, insert, replace } from "../Database/utils";
+import { deleteSound, getAll, getById, insert, replace } from "../Database/utils";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
 import { body, check } from 'express-validator';
 import { ValidationMiddleware } from "../Middlewares/validation.middleware";
-import { rm } from "fs/promises";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
