@@ -18,6 +18,11 @@ async function init() {
 
     await connection.synchronize();
 
+    const games = await manager.find(Game, {
+
+    });
+
+    console.log(games);
     
 
     console.log("Connected");

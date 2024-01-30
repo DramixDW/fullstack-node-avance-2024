@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ValueTransformer } from "typeorm";
 
 export enum GameType {
     FPS = "FPS",
@@ -11,6 +11,18 @@ export enum GameType {
     RTS = "RTS",
     STRATEGY = "STRATEGY",
     TURN_BASED = "TURN_BASED"
+}
+
+export class DecimalTransformer implements ValueTransformer {
+  to(decimal?: number): number | undefined {
+    // on fait rien
+    return decimal;
+  }
+
+  from(decimal?: string): number | undefined {
+    // on le transforme en nombre quand on le recup de la DB
+    return decimal ? parseFloat(decimal) : undefined;
+  }
 }
 
 @Entity()
@@ -28,7 +40,8 @@ export class Game {
         type: 'decimal',
         precision: 6,
         scale: 2,
-        nullable: true
+        nullable: true,
+        transformer: new DecimalTransformer()
     })
     public declare price?: number;
 
@@ -46,7 +59,8 @@ export class Game {
     @Column({
         type: 'decimal',
         precision: 3,
-        scale: 1
+        scale: 1,
+        transformer: new DecimalTransformer()
     })
     public declare note: number;
 }
