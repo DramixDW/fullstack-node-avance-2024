@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
         "strict": true,
-        "target": "ES2015",
+        "target": "ES2017",
         "outDir": "dist",
         "module": "CommonJS",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true
