@@ -1,4 +1,4 @@
-import { DataSource, In, LessThan, Raw } from "typeorm";
+import { DataSource, In, IsNull, LessThan, Not, Raw } from "typeorm";
 import { Game, GameType } from "./models/games";
 
 async function init() {
@@ -38,6 +38,24 @@ async function init() {
     });
 
     console.log(badGames);
+
+    // pas de prix
+    const noPriceGames = await manager.find(Game, {
+        where: {
+            price: IsNull()
+        }
+    });
+
+    console.log('Jeux sans prix : ', noPriceGames);
+
+    // tout sauf fallout
+    const notFallout = await manager.find(Game, {
+        where: {
+            title: Not('Fallout II')
+        }
+    });
+
+    console.log(notFallout);
     
 
     console.log("Connected");
