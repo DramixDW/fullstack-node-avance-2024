@@ -18,20 +18,7 @@ async function init() {
 
     await connection.synchronize();
 
-    // const game = manager.create(
-    //     Game,
-    //     {
-    //         title: 'Heroes of Might and Magic IV',
-    //         genre: [
-    //             GameType.TURN_BASED,
-    //             GameType.STRATEGY
-    //         ],
-    //         releaseDate: '2002-03-28',
-    //         note: 84.0
-    //     }
-    // );
-
-    // await manager.save(game);
+    
 
     console.log("Connected");
 }

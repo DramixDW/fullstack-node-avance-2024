@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum GameType {
     FPS = "FPS",
+    ACTION = "Action",
     RPG = "RPG",
     MMO = "MMO",
     HENTAI = "HENTAI",
