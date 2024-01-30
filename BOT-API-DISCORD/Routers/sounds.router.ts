@@ -12,8 +12,12 @@ const storage = multer.diskStorage({
         cb(null, './uploads');
     },
     filename: (req, file, cb) => {
-        // file-5666565
-        cb(null, `${file.originalname}-${Date.now()}`);
+        // ['lapin', 'mp3']
+        const fileParts = file.originalname.split('.');
+        const extension = fileParts.pop();
+        // file.mp3
+        // => file-4556466.mp3
+        cb(null, `${fileParts.join('.')}-${Date.now()}.${extension}`);
     }
 });
 
