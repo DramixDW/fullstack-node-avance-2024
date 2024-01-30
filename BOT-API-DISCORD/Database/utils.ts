@@ -64,7 +64,7 @@ export async function deleteEntity (modelName: string, id: string) {
 }
 
 export async function deleteSound (id: string) {
-    const deleted = await deleteEntity('sound', id); // on supprime le son en DB
+    const deleted = await deleteEntity('sounds', id); // on supprime le son en DB
     // pas oublier uploads/ devant
     const deletedPath = `uploads/${deleted.file}`;
     await rm(deletedPath);

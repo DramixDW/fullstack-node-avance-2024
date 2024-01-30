@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { deleteEntity, getAll, getById, insert, replace } from "../Database/utils";
+import { deleteEntity, deleteSound, getAll, getById, insert, replace } from "../Database/utils";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
@@ -67,7 +67,7 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
         fileName.pop();
         // => ['truc']
         await insert('sounds', {
-            id: new Date().getTime(),
+            id: new Date().getTime().toString(),
             name: `${request.body.name}-${fileName.join('.')}`,
             category: request.body.category,
             file: file.originalname,
@@ -96,6 +96,6 @@ soundRouter.post('/:id', configuredMulter.single('sound'), async (request, respo
 })
 
 soundRouter.delete('/:id', async (request, response) => {
-    await deleteEntity('sounds', request.params.id);
+    await deleteSound(request.params.id);
     response.status(204).send(null);
 })
