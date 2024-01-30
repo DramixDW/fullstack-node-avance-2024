@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        // file-5666565
+        cb(null, `${file.originalname}-${Date.now()}`);
     }
 });
 
@@ -70,7 +71,8 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
             id: new Date().getTime().toString(),
             name: `${request.body.name}-${fileName.join('.')}`,
             category: request.body.category,
-            file: file.originalname,
+            // filename à la place de originalName pour avoir le nom du fichier final qui sera stocké sur le disque
+            file: file.filename,
         });
     }
 
