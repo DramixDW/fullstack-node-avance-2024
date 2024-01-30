@@ -77,7 +77,32 @@ async function init() {
     });
 
     console.log('boomer games', boomerGames);
-    
+
+    // modification avec un save
+    const tetris = await manager.findOneOrFail(Game, {
+        where: {
+            title: Equal('Tetris')
+        }
+    });
+
+    tetris.note = 5;
+
+    await manager.save(tetris);
+
+    // UPDATE EN SQL DIRECTEMENT avec un query builder
+    const updateQuery = await
+        manager.createQueryBuilder()
+            .update(Game)
+            .set({
+                note: 5
+            })
+            .where({
+                title: Equal('Tetris')
+            })
+            .execute();
+
+    // EN SQL PUR
+    // await manager.query("UPDATE games SET title='tetrix'");
 
     console.log("Connected");
 }
