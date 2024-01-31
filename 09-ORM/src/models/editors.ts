@@ -19,6 +19,4 @@ export class Editor {
     // Il y a une relation many vers Game, et la relation inverse est l'éditeur dans la classe Game.
     @OneToMany(() => Game, (game) => game.editor)
     public declare games: Game[];
-
-    
 }

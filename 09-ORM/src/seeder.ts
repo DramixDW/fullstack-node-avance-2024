@@ -27,6 +27,13 @@ export async function seedDatabase(manager: EntityManager) {
         ]
     );
 
+    await manager.save([
+        PCMasterRace,
+        Playstation,
+        XBOX,
+        Gameboy
+    ]);
+
     const [
         ,
         BlackIsle,
@@ -39,30 +46,46 @@ export async function seedDatabase(manager: EntityManager) {
         Editor,
         [
             {
-                name: 'Microsoft'
+                name: 'Microsoft',
+                countryCode: 'US'
             },
             {
-                name: 'Black Isle Studio'
+                name: 'Black Isle Studio',
+                countryCode: 'US'
             },
             {
-                name: 'CD Projekt'
+                name: 'CD Projekt',
+                countryCode: 'PL'
             },
             {
-                name: 'Rockstar Games'
+                name: 'Rockstar Games',
+                countryCode: 'PL'
             },
             {
-                name: '3dO'
+                name: '3dO',
+                countryCode: 'US'
             },
             {
-                name: 'Nintendo'
+                name: 'Nintendo',
+                countryCode: 'JP'
             },
             {
-                name: 'Valve Software'
+                name: 'Valve Software',
+                countryCode: 'US'
             }
         ]
     );
 
-    const game = manager.create(
+    await manager.save([
+        BlackIsle,
+        CdProjekt,
+        Rockstar,
+        ThreeDO,
+        Nintendo,
+        Valve
+    ]);
+
+    const games = manager.create(
         Game,
         [
             {
@@ -147,5 +170,7 @@ export async function seedDatabase(manager: EntityManager) {
         ]
     );
 
-    await manager.save(game);
+    await manager.save(
+        games
+    );
 }
