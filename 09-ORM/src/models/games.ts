@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, ValueTransformer } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, ValueTransformer } from "typeorm";
 import { Editor } from "./editors";
+import { Platform } from "./platforms";
 
 export enum GameType {
     FPS = "FPS",
@@ -68,4 +69,8 @@ export class Game {
     // relation one vers Editor. La propriété dans Editor faisant le lien est 'games'
     @ManyToOne(() => Editor, (editor) => editor.games)
     public declare editor: Editor;
+
+    @ManyToMany(() => Platform, (platform) => platform.games)
+    @JoinTable()
+    public declare platforms: Platform[];
 }

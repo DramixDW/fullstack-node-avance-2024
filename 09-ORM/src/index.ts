@@ -17,9 +17,8 @@ async function init() {
 
     const manager = connection.manager;
 
+    // await connection.dropDatabase();
     await connection.synchronize();
-
-    
 
     console.log("Connected");
 }
