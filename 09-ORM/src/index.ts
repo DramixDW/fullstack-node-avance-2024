@@ -1,6 +1,7 @@
 import { DataSource, Equal, In, IsNull, LessThan, Not, Raw } from "typeorm";
 import { Game, GameType } from "./models/games";
 import { seedDatabase } from "./seeder";
+import { Platform } from "./models/platforms";
 
 async function init() {
     const connection = new DataSource({
@@ -22,6 +23,30 @@ async function init() {
     await connection.synchronize();
 
     await seedDatabase(manager);
+
+    const heroesOfMightAndMagic = await manager.findOneOrFail(Game, {
+        where: {
+            title: Equal('Heroes Of Might and magic IV')
+        },
+        // on charge les relations explicitement
+        relations: ['editor', 'platforms']
+    });
+
+    const XBOX = await manager.findOneOrFail(Platform, {
+        where: {
+            name: 'XBOX'
+        }
+    });
+
+    // ajout de la relation aux plate-formes
+    heroesOfMightAndMagic.platforms.push(XBOX);
+
+    // suppression de la relation
+    heroesOfMightAndMagic.platforms = heroesOfMightAndMagic.platforms.filter((platform) => {
+        return platform.name !== "PC master race"
+    });
+
+    await manager.save(heroesOfMightAndMagic);
 
     console.log("Connected");
 }
