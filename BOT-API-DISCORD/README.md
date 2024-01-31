@@ -6,3 +6,4 @@
 # Exercice 2
 
 1. Remplacer la DB JSON et les appels du bot par une vraie DB mysql et un ORM.
+2. 
