@@ -48,6 +48,12 @@ async function init() {
 
     await manager.save(heroesOfMightAndMagic);
 
+    await manager.delete(Game, {
+        id: '6'
+    });
+
+    await manager.delete(Platform, XBOX);
+
     console.log("Connected");
 }
 

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Game } from "./games";
 
 @Entity()
@@ -11,6 +11,9 @@ export class Platform {
     })
     public declare name: string;
 
-    @ManyToMany(() => Game, (game) => game.platforms)
+    @ManyToMany(() => Game, (game) => game.platforms, {
+        cascade: true,
+        onDelete: 'CASCADE'
+    })
     public declare games: Game[];
 }
