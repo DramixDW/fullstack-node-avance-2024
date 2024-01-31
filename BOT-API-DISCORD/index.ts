@@ -7,6 +7,8 @@ import { notFoundErrorHandler } from "./Error-Handler/not-found-error.handler";
 import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
+import { DataSource } from "typeorm";
+import { seedUsers } from "./Seeders/main";
 
 // classes => PascalCase
 // function => camelCase
@@ -16,25 +18,44 @@ import { userRouter } from "./Routers/users.router";
 
 const PORT = 8081;
 
-const application: Application = express();
+async function init() {
+    const connection = new DataSource({
+        host: 'localhost',
+        port: 3306,
+        database: 'bot',
+        username: 'bot',
+        password: 'bot',
+        type: 'mysql',
+        entities: ["Models/*.ts"]
+    });
+    
+    await connection.initialize();
+    await connection.synchronize();
+    // await seedUsers(connection.manager);
+    
+    const application: Application = express();
+    
+    application.engine('mustache', mustacheExpress());
+    application.set('view engine', 'mustache');
+    application.set('views', './Views');
+    
+    application.use(json());
+    application.use(loggerMiddleware);
+    application.use('/static', express.static(__dirname + '/uploads'));
+    application.use('/sounds', soundRouter);
+    application.use('/users', userRouter);
+    //override le comportement par défaut pour la 404
+    application.use((request, response, next) => {
+        throw new NotFoundError();
+    })
+    application.use(notFoundErrorHandler);
+    application.use(internalServerErrorHandler);
+    
+    
+    application.listen(PORT, () => {
+        console.log(`Prêt et à l\'écoute sur http://localhost:${PORT}`);
+    })
+}
 
-application.engine('mustache', mustacheExpress());
-application.set('view engine', 'mustache');
-application.set('views', './Views');
 
-application.use(json());
-application.use(loggerMiddleware);
-application.use('/static', express.static(__dirname + '/uploads'));
-application.use('/sounds', soundRouter);
-application.use('/users', userRouter);
-//override le comportement par défaut pour la 404
-application.use((request, response, next) => {
-    throw new NotFoundError();
-})
-application.use(notFoundErrorHandler);
-application.use(internalServerErrorHandler);
-
-
-application.listen(PORT, () => {
-    console.log(`Prêt et à l\'écoute sur http://localhost:${PORT}`);
-})
+init();
