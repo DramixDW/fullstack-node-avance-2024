@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import JWT from "jsonwebtoken";
+import { DataSource } from "typeorm";
+import { User } from "./user";
+import { compare, hash } from "bcrypt";
 
 export const jwt_secret = `MIICXQIBAAKBgQC5CE2UBc/+Ewh56sAbSNX9e3+bcGSIWalB1lHFkYls3WtXE3ZB
 wd4NbN6J2Fw2qwxo/YDVgASGyY2LPkcJKD1ZP3gsG+LjTgixLC7X+pEFbeF0qh3t
@@ -15,28 +18,51 @@ BB6/ft9hbMG99F+ONHTlrDZ7iX1q9j1PhfFXXU2rQGFAl0Y6ILiCLM7fhGZl5jHV
 6Ng6XPAIrMfj7ZvICw5RAkAUCkhrs3NF7rZB4EoFkaJdipSCNysPhzURJMFMv6Yb
 A1HcaoKtL/QcZd68Tt7DIiY+KgpVDxzxSRw0O5izT0K5`;
 
-
-const users = [{
-    email: "test@test.com",
-    id: 1,
-  },{
-    email: "test@banane.com",
-    id: 2,
-  },{
-    email: "test@orange.com",
-    id: 3,
-}];
-
-
 async function init() {
   const application = express();
 
+  const database = new DataSource({
+    type: 'sqlite',
+    database: 'jwt-example',
+    entities: [User]
+  });
+
+
+  await database.initialize();
+  await database.dropDatabase();
+  await database.synchronize();
+
+  const dramix = database.manager.create(User, {
+    name: 'Dramix',
+    password: "$2b$10$54xzHr1FDICbTLt/SYdEYew7hr0vDVgkab.IK5ANGlV6aas.HVlbK"
+  });
+
+  await database.manager.save(dramix);
+
   application.use(express.json());
   // La route qui va générer le jsonWebToken
-  application.post('/login', (request: Request, response: Response) => {
-      const id = users.find(user => user.email === request.body.email)?.id;
+  application.post('/login', async (request: Request, response: Response) => {
+      const { name, password } = request.body;
+
+      const user = await database.manager.findOne(User, {
+        where: {
+          name
+        }
+      });
+
+      
+      if (user === null) {
+        return response.send("Password or username does not match");
+      }
+
+      const isMatching = await compare(password, user.password);
+      
+      if (!isMatching) {
+        return response.send("Password or username does not match");
+      }
+
       const token = JWT.sign({
-          id,
+          id: user.id,
           //issuedAt: à quel moment il a été généré
           iat: new Date().getTime() / 1000,
           // à quelle moment le token expire
