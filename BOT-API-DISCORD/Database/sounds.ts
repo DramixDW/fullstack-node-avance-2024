@@ -3,8 +3,10 @@ import { Sound } from "../Models/sounds";
 import { DatabaseConnection } from "./connection";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 
-export async function getAllSounds () {
-    return DatabaseConnection.manager.find(Sound);
+export async function getAllSounds (relations: string[] = []) {
+    return DatabaseConnection.manager.find(Sound, {
+        relations
+    });
 }
 
 export async function createSound(obj: Object) {

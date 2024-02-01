@@ -33,11 +33,11 @@ export const soundRouter = Router();
 soundRouter.get('/', createAuthorizeMiddleWare([]), async (request, response) => {
     const sounds = await getAllSounds();
     response.send(sounds);
-})
+});
 
 soundRouter.get('/list', async (request, response) => {
     const [sounds, categories] = await Promise.all([
-        getAllSounds(),
+        getAllSounds(['category']),
         getAllCategories()
     ]);
 
