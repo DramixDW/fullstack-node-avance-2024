@@ -39,7 +39,12 @@
             </div>
             <div>
                 <label for="category">Catégorie</label>
-                <input type="text" name="category" id="category">
+                <select name="category" id="category">
+                    {{!-- <option value="" selected>Choisir une catégorie</option> --}}
+                    {{#categories}}
+                        <option value={{id}}>{{name}}</option>
+                    {{/categories}}
+                </select>
             </div>
             <div>
                 <label for="sound">Son</label>

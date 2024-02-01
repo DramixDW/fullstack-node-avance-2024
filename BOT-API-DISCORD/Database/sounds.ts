@@ -1,5 +1,4 @@
 import { rm } from "fs/promises";
-import { NotFoundError } from "../Errors/not-found.error";
 import { Sound } from "../Models/sounds";
 import { DatabaseConnection } from "./connection";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
@@ -31,11 +30,11 @@ export async function getSoundById(id: string) {
 export async function deleteSound (id: string) {
     const sound = await getSoundById(id);
     await DatabaseConnection.manager.delete(Sound, sound);
-    await deleteSoundFile(sound.file);
+    await deleteFile(sound.file);
 }
 
 // suppression du FICHIER son
-async function deleteSoundFile(file: string) {
+export async function deleteFile(file: string) {
     const path = `uploads/${file}`;
     await rm(path);
 }
@@ -47,7 +46,7 @@ export async function replaceSound(id: string, body: Object) {
 
     await DatabaseConnection.manager.save(sound);
 
-    await deleteSoundFile(originalFile);
+    await deleteFile(originalFile);
 }
 
 

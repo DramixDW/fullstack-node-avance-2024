@@ -6,6 +6,8 @@ import multer from "multer";
 import { body, check } from 'express-validator';
 import { ValidationMiddleware } from "../Middlewares/validation.middleware";
 import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../Database/sounds";
+import { getAllCategories } from "../Database/categories";
+import { FileValidationMiddleware } from "../Middlewares/file-validation.middleware";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -34,8 +36,13 @@ soundRouter.get('/', createAuthorizeMiddleWare([]), async (request, response) =>
 })
 
 soundRouter.get('/list', async (request, response) => {
-    const sounds = await getAllSounds();
+    const [sounds, categories] = await Promise.all([
+        getAllSounds(),
+        getAllCategories()
+    ]);
+
     response.render('sound_list', {
+        categories,
         sounds,
     });
 })
@@ -58,7 +65,7 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
     req.body.files = req.files; // => tableau de fichiers 
     // on passe à la suite => ...uploadValidation
     next();
-} , ...uploadValidation, ValidationMiddleware, async (request, response) => {
+} , ...uploadValidation, FileValidationMiddleware, async (request, response) => {
     // soit un objet de files, soit un tableau de files. On doit utiliser une assertion pour lui indiquer le bon type.
     const files = request.files as Express.Multer.File[];
 
@@ -69,9 +76,15 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
         fileName.pop();
         // => ['truc']
 
+        let name = `${request.body.name}-${fileName.join('.')}`;
+
+        if (files.length === 1) {
+            name = request.body.name; 
+        }
+
         await createSound({
             id: new Date().getTime().toString(),
-            name: `${request.body.name}-${fileName.join('.')}`,
+            name,
             category: request.body.category,
             // filename à la place de originalName pour avoir le nom du fichier final qui sera stocké sur le disque
             file: file.filename,
