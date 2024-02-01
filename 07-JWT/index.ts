@@ -50,7 +50,6 @@ async function init() {
         }
       });
 
-      
       if (user === null) {
         return response.send("Password or username does not match");
       }
