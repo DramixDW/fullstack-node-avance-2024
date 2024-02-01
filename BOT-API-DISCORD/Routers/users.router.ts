@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { deleteEntity, getAll, getById, insert, update } from "../Database/utils";
+import { deleteUser, getAllUsers, getUserById, insertUser, updateUser } from "../Database/users";
 
 export const userRouter = Router();
 
 userRouter.get('/', async (request, response) => {
-    const allUsers = await getAll('users');
+    const allUsers = await getAllUsers();
     response.send(allUsers);
 })
 
 userRouter.get('/list', async (request, response) => {
-   const users = await getAll("users");  
+   const users = await getAllUsers();  
    response.render("user_list", {
         users,
         isCurrentRole: () => function (placeholder: string, render: Function) {
@@ -24,7 +24,7 @@ userRouter.get('/list', async (request, response) => {
 
 userRouter.get('/:id', async (request, response, next) => {
     try {
-        const user = await getById('users', request.params.id);
+        const user = await getUserById(request.params.id);
         response.send(user);
     } catch(err) {
         next(err);
@@ -32,12 +32,12 @@ userRouter.get('/:id', async (request, response, next) => {
 })
 
 userRouter.post('/', async (request, response) => {
-    response.send(await insert('users', request.body));
+    response.send(await insertUser(request.body));
 })
 
 userRouter.patch('/:id', async (request, response, next) => {
     try {
-        const user = await update('users', request.params.id, request.body);
+        const user = await updateUser(request.params.id, request.body);
         response.send(user);
     } catch(err) {
         next(err);
@@ -45,6 +45,6 @@ userRouter.patch('/:id', async (request, response, next) => {
 })
 
 userRouter.delete('/:id', async (request, response) => {
-    await deleteEntity('users', request.params.id);
+    await deleteUser(request.params.id);
     response.status(204).send(null);
 })

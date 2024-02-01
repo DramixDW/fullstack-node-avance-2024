@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { deleteSound, getAll, getById, insert, replace } from "../Database/utils";
+import { deleteSound, getAllUsers, getUserById, insertUser, replace } from "../Database/users";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import multer from "multer";
@@ -28,19 +28,19 @@ const configuredMulter = multer({
 export const soundRouter = Router();
 
 soundRouter.get('/', createAuthorizeMiddleWare([]), async (request, response) => {
-    const sounds = await getAll('sounds');
+    const sounds = await getAllUsers('sounds');
     response.send(sounds);
 })
 
 soundRouter.get('/list', async (request, response) => {
-    const sounds = await getAll('sounds');
+    const sounds = await getAllUsers('sounds');
     response.render('sound_list', {
         sounds,
     });
 })
 
 soundRouter.get('/:id', createAuthorizeMiddleWare([]), async (request: Request, response: Response, next: NextFunction) => {
-    const sound = await getById('sounds', request.params.id);
+    const sound = await getUserById('sounds', request.params.id);
     if (!sound) {
         return next(new EntityNotFoundError('banane'));
     }
@@ -70,7 +70,7 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
         // => ['truc', 'mp3']
         fileName.pop();
         // => ['truc']
-        await insert('sounds', {
+        await insertUser('sounds', {
             id: new Date().getTime().toString(),
             name: `${request.body.name}-${fileName.join('.')}`,
             category: request.body.category,

@@ -9,6 +9,7 @@ import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
 import { DataSource } from "typeorm";
 import { seedUsers } from "./Seeders/main";
+import { DatabaseConnection } from "./Database/connection";
 
 // classes => PascalCase
 // function => camelCase
@@ -19,18 +20,10 @@ import { seedUsers } from "./Seeders/main";
 const PORT = 8081;
 
 async function init() {
-    const connection = new DataSource({
-        host: 'localhost',
-        port: 3306,
-        database: 'bot',
-        username: 'bot',
-        password: 'bot',
-        type: 'mysql',
-        entities: ["Models/*.ts"]
-    });
-    
-    await connection.initialize();
-    await connection.synchronize();
+    await DatabaseConnection.init();
+    const databaseInstance = DatabaseConnection.getConnection();
+
+    await databaseInstance.synchronize();
     // await seedUsers(connection.manager);
     
     const application: Application = express();

@@ -1,12 +1,12 @@
 import { NextFunction, RequestHandler, Response, Request } from "express";
-import { getById } from "../Database/utils";
+import { getUserById } from "../Database/users";
 
 export function createAuthorizeMiddleWare(roles: string[]): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
         if (!request.query.userId) {
             return response.status(403).send("Forbidden");
         }
-        const user = await getById('users', request.query.userId as string);
+        const user = await getUserById('users', request.query.userId as string);
         if (!user) {
             return response.status(403).send("Forbidden");
         }
