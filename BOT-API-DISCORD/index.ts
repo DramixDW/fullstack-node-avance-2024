@@ -8,7 +8,7 @@ import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
 import { DataSource } from "typeorm";
-import { seedUsers } from "./Database/seeder";
+import { seeder } from "./Database/seeder";
 import { DatabaseConnection } from "./Database/connection";
 
 // classes => PascalCase
@@ -23,8 +23,9 @@ async function init() {
     await DatabaseConnection.init();
     const databaseInstance = DatabaseConnection.getConnection();
 
+    // await databaseInstance.dropDatabase();
     await databaseInstance.synchronize();
-    // await seedUsers(connection.manager);
+    // await seeder();
     
     const application: Application = express();
     
