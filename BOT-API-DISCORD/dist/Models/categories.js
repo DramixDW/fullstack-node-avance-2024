@@ -9,33 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Sound = void 0;
+exports.Category = void 0;
 const typeorm_1 = require("typeorm");
-const categories_1 = require("./categories");
-let Sound = class Sound {
+const sounds_1 = require("./sounds");
+let Category = class Category {
 };
-exports.Sound = Sound;
+exports.Category = Category;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", String)
-], Sound.prototype, "id", void 0);
+], Category.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        length: 64,
-        unique: true
+        unique: true,
+        length: 32
     }),
     __metadata("design:type", String)
-], Sound.prototype, "name", void 0);
+], Category.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
-        length: 260
-    }),
-    __metadata("design:type", String)
-], Sound.prototype, "file", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => categories_1.Category, (cat) => cat.sounds),
-    __metadata("design:type", categories_1.Category)
-], Sound.prototype, "category", void 0);
-exports.Sound = Sound = __decorate([
+    (0, typeorm_1.OneToMany)(() => sounds_1.Sound, (sound) => sound.category),
+    __metadata("design:type", Array)
+], Category.prototype, "sounds", void 0);
+exports.Category = Category = __decorate([
     (0, typeorm_1.Entity)()
-], Sound);
+], Category);

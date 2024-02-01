@@ -8,7 +8,7 @@ import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
 import { DataSource } from "typeorm";
-import { seedUsers } from "./Seeders/main";
+import { seedUsers } from "./Database/seeder";
 import { DatabaseConnection } from "./Database/connection";
 
 // classes => PascalCase

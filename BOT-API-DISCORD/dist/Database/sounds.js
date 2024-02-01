@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceSound = exports.deleteSound = exports.getSoundById = exports.createSound = exports.getAllSounds = void 0;
 const promises_1 = require("fs/promises");
-const not_found_error_1 = require("../Errors/not-found.error");
 const sounds_1 = require("../Models/sounds");
 const connection_1 = require("./connection");
 const entity_not_found_error_1 = require("../Errors/entity-not-found.error");
@@ -29,12 +28,7 @@ async function getSoundById(id) {
 }
 exports.getSoundById = getSoundById;
 async function deleteSound(id) {
-    const sound = await connection_1.DatabaseConnection.manager.findOneBy(sounds_1.Sound, {
-        id
-    });
-    if (!sound) {
-        throw new not_found_error_1.NotFoundError();
-    }
+    const sound = await getSoundById(id);
     await connection_1.DatabaseConnection.manager.delete(sounds_1.Sound, sound);
     await deleteSoundFile(sound.file);
 }

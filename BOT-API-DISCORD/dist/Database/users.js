@@ -27,28 +27,14 @@ async function insertUser(body) {
 }
 exports.insertUser = insertUser;
 async function updateUser(id, body) {
-    const user = await connection_1.DatabaseConnection.manager.findOne(users_1.User, {
-        where: {
-            id
-        }
-    });
-    if (user === null) {
-        throw new entity_not_found_error_1.EntityNotFoundError();
-    }
+    const user = await getUserById(id);
     Object.assign(user, body);
     await connection_1.DatabaseConnection.manager.save(user);
     return user;
 }
 exports.updateUser = updateUser;
 async function deleteUser(id) {
-    const user = await connection_1.DatabaseConnection.manager.findOne(users_1.User, {
-        where: {
-            id
-        }
-    });
-    if (!user) {
-        throw new entity_not_found_error_1.EntityNotFoundError();
-    }
+    const user = await getUserById(id);
     await connection_1.DatabaseConnection.manager.delete(users_1.User, user);
     return user;
 }

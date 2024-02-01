@@ -29,14 +29,7 @@ export async function getSoundById(id: string) {
 }
 
 export async function deleteSound (id: string) {
-    const sound = await DatabaseConnection.manager.findOneBy(Sound, {
-        id
-    });
-
-    if (!sound) {
-        throw new NotFoundError();
-    }
-
+    const sound = await getSoundById(id);
     await DatabaseConnection.manager.delete(Sound, sound);
     await deleteSoundFile(sound.file);
 }

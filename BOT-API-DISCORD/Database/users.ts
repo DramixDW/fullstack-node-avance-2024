@@ -26,37 +26,15 @@ export async function insertUser(body: Object) {
     return user;
 }
 
-
 export async function updateUser (id: string, body: Object) {
-    const user = await DatabaseConnection.manager.findOne(User, {
-        where: {
-            id
-        }
-    });
-
-    if (user === null) {
-        throw new EntityNotFoundError();
-    }
-
+    const user = await getUserById(id);
     Object.assign(user, body);
-
     await DatabaseConnection.manager.save(user);
-
     return user;
 }
 
 export async function deleteUser (id: string) {
-    const user = await DatabaseConnection.manager.findOne(User, {
-        where: {
-            id
-        }
-    });
-
-    if (!user) {
-        throw new EntityNotFoundError();
-    }
-
+    const user = await getUserById(id);
     await DatabaseConnection.manager.delete(User, user);
- 
     return user;
 }
