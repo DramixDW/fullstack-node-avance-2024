@@ -1,12 +1,9 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { getUserById, insertUser } from "../Database/users";
-import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
-import { EntityNotFoundError } from "../Errors/entity-not-found.error";
+import { body } from 'express-validator';
 import multer from "multer";
-import { body, check } from 'express-validator';
-import { ValidationMiddleware } from "../Middlewares/validation.middleware";
-import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../Database/sounds";
 import { getAllCategories } from "../Database/categories";
+import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../Database/sounds";
+import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { FileValidationMiddleware } from "../Middlewares/file-validation.middleware";
 
 const storage = multer.diskStorage({

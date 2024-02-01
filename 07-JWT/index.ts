@@ -15,6 +15,7 @@ BB6/ft9hbMG99F+ONHTlrDZ7iX1q9j1PhfFXXU2rQGFAl0Y6ILiCLM7fhGZl5jHV
 6Ng6XPAIrMfj7ZvICw5RAkAUCkhrs3NF7rZB4EoFkaJdipSCNysPhzURJMFMv6Yb
 A1HcaoKtL/QcZd68Tt7DIiY+KgpVDxzxSRw0O5izT0K5`;
 
+
 const users = [{
     email: "test@test.com",
     id: 1,
@@ -26,39 +27,44 @@ const users = [{
     id: 3,
 }];
 
-const application = express();
 
-application.use(express.json());
-// La route qui va générer le jsonWebToken
-application.post('/login', (request, response) => {
-    const id = users.find(user => user.email === request.body.email)?.id;
-    const token = JWT.sign({
-        id,
-        //issuedAt: à quel moment il a été généré
-        iat: new Date().getTime() / 1000,
-        // à quelle moment le token expire
-        exp: (new Date().getTime() / 1000) + 300,
-    }, jwt_secret);
+async function init() {
+  const application = express();
 
-    response.send({
-        token,
-    })
-})
+  application.use(express.json());
+  // La route qui va générer le jsonWebToken
+  application.post('/login', (request: Request, response: Response) => {
+      const id = users.find(user => user.email === request.body.email)?.id;
+      const token = JWT.sign({
+          id,
+          //issuedAt: à quel moment il a été généré
+          iat: new Date().getTime() / 1000,
+          // à quelle moment le token expire
+          exp: (new Date().getTime() / 1000) + 300,
+      }, jwt_secret);
 
-const isLoggedMiddleWare = (request: Request, response: Response, next: NextFunction) => {
-  const token = request.headers.authorization?.split(" ")[1];  
-  if (!token) {
-    throw new Error("Access Forbidden");
+      response.send({
+          token,
+      })
+  })
+
+  const isLoggedMiddleWare = (request: Request, response: Response, next: NextFunction) => {
+    const token = request.headers.authorization?.split(" ")[1];  
+    if (!token) {
+      throw new Error("Access Forbidden");
+    }
+    const payload = JWT.verify(token, jwt_secret);
+    console.log(payload);
+    next();
   }
-  const payload = JWT.verify(token, jwt_secret);
-  console.log(payload);
-  next();
+
+  application.get('/', isLoggedMiddleWare, (request, response) => {
+      response.send("Ok");
+  });
+
+  application.listen(8001, () => {
+      console.log('Tu peux te logger :)');
+  })
 }
 
-application.get('/', isLoggedMiddleWare, (request, response) => {
-    response.send("Ok");
-});
-
-application.listen(8001, () => {
-    console.log('Tu peux te logger :)');
-})
+init();
