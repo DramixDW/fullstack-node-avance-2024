@@ -99,7 +99,7 @@ soundRouter.post('/', configuredMulter.array('sound'), (req, _res, next) => {
 soundRouter.post('/:id', configuredMulter.single('sound'), async (request, response) => {
     await replaceSound(request.params.id, {
         ...request.body,
-        file: request.file?.originalname,
+        file: request.file?.filename,
     });
     response.redirect('/sounds/list');
 });
