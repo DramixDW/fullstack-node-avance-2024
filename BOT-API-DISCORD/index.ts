@@ -11,6 +11,7 @@ import { DatabaseConnection } from "./Database/connection";
 import { config } from "dotenv";
 import { authRouter } from "./Routers/auth.router";
 import cookieParser from 'cookie-parser';
+import { seeder } from "./Database/seeder";
 
 // classes => PascalCase
 // function => camelCase
@@ -28,9 +29,16 @@ async function init() {
     await DatabaseConnection.init();
     const databaseInstance = DatabaseConnection.getConnection();
 
-    // await databaseInstance.dropDatabase();
-    await databaseInstance.synchronize();
-    // await seeder();
+
+    if (process.env.DB_REFRESH === "true") {
+        console.log("Refreshing de la DB ...");
+        
+        await databaseInstance.dropDatabase();
+        await databaseInstance.synchronize();
+        await seeder();
+    }else{
+        await databaseInstance.synchronize();
+    }
     
     const application: Application = express();
     
