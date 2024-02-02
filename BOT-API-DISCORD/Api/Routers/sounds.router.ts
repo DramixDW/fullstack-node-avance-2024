@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { body } from 'express-validator';
 import multer from "multer";
-import { getAllCategories } from "../Database/categories";
-import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../Database/sounds";
+import { getAllCategories } from "../../Core/Database/categories";
+import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../../Core/Database/sounds";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { FileValidationMiddleware } from "../Middlewares/file-validation.middleware";
-import { Role } from "../Models/users";
+import { Role } from "../../Core/Models/users";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

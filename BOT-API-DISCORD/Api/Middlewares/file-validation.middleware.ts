@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
 import { validationResult } from "express-validator";
-import { deleteFile } from "../Database/sounds";
+import { deleteFile } from "../../Core/Database/sounds";
 
 export const FileValidationMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const result = validationResult(req);

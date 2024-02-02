@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { deleteUser, getAllUsers, getUserById, insertUser, updateUser } from "../Database/users";
+import { deleteUser, getAllUsers, getUserById, insertUser, updateUser } from "../../Core/Database/users";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
-import { Role } from "../Models/users";
+import { Role } from "../../Core/Models/users";
 
 export const userRouter = Router();
 

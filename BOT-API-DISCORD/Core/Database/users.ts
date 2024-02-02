@@ -1,4 +1,4 @@
-import { EntityNotFoundError } from "../Errors/entity-not-found.error";
+import { EntityNotFoundError } from "../../Api/Errors/entity-not-found.error";
 import { DatabaseConnection } from "./connection";
 import { User } from "../Models/users";
 

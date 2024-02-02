@@ -1,8 +1,8 @@
 import { compare } from "bcrypt";
 import { Router } from "express";
 import { sign } from "jsonwebtoken";
-import { DatabaseConnection } from "../Database/connection";
-import { User } from "../Models/users";
+import { DatabaseConnection } from "../../Core/Database/connection";
+import { User } from "../../Core/Models/users";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
 import rateLimit from "express-rate-limit";
 

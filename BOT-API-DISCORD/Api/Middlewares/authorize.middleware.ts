@@ -1,5 +1,5 @@
 import { NextFunction, RequestHandler, Response, Request } from "express";
-import { getUserById } from "../Database/users";
+import { getUserById } from "../../Core/Database/users";
 import { verify } from "jsonwebtoken";
 
 export function createAuthorizeMiddleWare(roles: string[]): RequestHandler {

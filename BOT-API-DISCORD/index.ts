@@ -1,17 +1,17 @@
 import { Application, json } from "express";
 import express from "express";
-import { soundRouter } from "./Routers/sounds.router";
-import { loggerMiddleware } from "./Middlewares/logger.middleware";
-import { internalServerErrorHandler } from "./Error-Handler/internal-server-error.handler";
-import { notFoundErrorHandler } from "./Error-Handler/not-found-error.handler";
-import { NotFoundError } from "./Errors/not-found.error";
+import { soundRouter } from "./Api/Routers/sounds.router";
+import { loggerMiddleware } from "./Api/Middlewares/logger.middleware";
+import { internalServerErrorHandler } from "./Api/Error-Handler/internal-server-error.handler";
+import { notFoundErrorHandler } from "./Api/Error-Handler/not-found-error.handler";
+import { NotFoundError } from "./Api/Errors/not-found.error";
 import mustacheExpress from "mustache-express";
-import { userRouter } from "./Routers/users.router";
-import { DatabaseConnection } from "./Database/connection";
+import { userRouter } from "./Api/Routers/users.router";
+import { DatabaseConnection } from "./Core/Database/connection";
 import { config } from "dotenv";
-import { authRouter } from "./Routers/auth.router";
+import { authRouter } from "./Api/Routers/auth.router";
 import cookieParser from 'cookie-parser';
-import { seeder } from "./Database/seeder";
+import { seeder } from "./Core/Database/seeder";
 import { rateLimit } from 'express-rate-limit';
 
 // classes => PascalCase
