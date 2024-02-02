@@ -7,6 +7,7 @@ export function createAuthorizeMiddleWare(roles: string[]): RequestHandler {
             return response.status(403).send("Forbidden");
         }
         const user = await getUserById(request.query.userId as string);
+        
         if (!user) {
             return response.status(403).send("Forbidden");
         }

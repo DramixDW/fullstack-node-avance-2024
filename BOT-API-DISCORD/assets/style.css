@@ -1,0 +1,14 @@
+main {
+    text-align: center;
+}
+
+main > form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+
+button {
+    margin-top: 2em;
+}

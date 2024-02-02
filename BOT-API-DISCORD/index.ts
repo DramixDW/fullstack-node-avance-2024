@@ -7,9 +7,8 @@ import { notFoundErrorHandler } from "./Error-Handler/not-found-error.handler";
 import { NotFoundError } from "./Errors/not-found.error";
 import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
-import { DataSource } from "typeorm";
-import { seeder } from "./Database/seeder";
 import { DatabaseConnection } from "./Database/connection";
+import { config } from "dotenv";
 
 // classes => PascalCase
 // function => camelCase
@@ -20,6 +19,10 @@ import { DatabaseConnection } from "./Database/connection";
 const PORT = 8081;
 
 async function init() {
+    config({
+        path: 'development.env'
+    });
+
     await DatabaseConnection.init();
     const databaseInstance = DatabaseConnection.getConnection();
 
@@ -35,6 +38,7 @@ async function init() {
     
     application.use(json());
     application.use(loggerMiddleware);
+    application.use('/assets', express.static(__dirname + '/assets'));
     application.use('/static', express.static(__dirname + '/uploads'));
     application.use('/sounds', soundRouter);
     application.use('/users', userRouter);

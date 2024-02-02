@@ -9,6 +9,11 @@ export enum Role {
 export class User {
     @PrimaryGeneratedColumn("uuid")
     public declare id: string;
+    
+    @Column({
+        unique: true
+    })
+    public declare username: string;
 
     @Column({
         length: 32

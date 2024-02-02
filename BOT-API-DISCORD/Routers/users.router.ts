@@ -1,5 +1,10 @@
-import { Router } from "express";
+import { Router, response } from "express";
 import { deleteUser, getAllUsers, getUserById, insertUser, updateUser } from "../Database/users";
+import { DatabaseConnection } from "../Database/connection";
+import { User } from "../Models/users";
+import { EntityNotFoundError } from "../Errors/entity-not-found.error";
+import { compare } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 export const userRouter = Router();
 
@@ -22,8 +27,43 @@ userRouter.get('/list', async (request, response) => {
    })
 });
 
+// récupération de la page
 userRouter.get('/login', async (request, response) => {
     return response.render('login_page', {});
+});
+
+// authentication
+userRouter.post('/login',async (request, response, next) => {
+    const { username , password } = request.body;
+
+    const user = await DatabaseConnection.manager.findOne(User, {
+        where: {
+            username
+        }
+    });
+
+    if (!user) {
+        return next(new EntityNotFoundError("Mot de passe ou nom d'utilisateur incorrect"));
+    }
+
+    if (!await compare(password, user.password)) {
+        return next(new EntityNotFoundError("Mot de passe ou nom d'utilisateur incorrect"));
+    }
+
+    const accessToken = sign({
+        id: user.id,
+        //issuedAt: à quel moment il a été généré
+        iat: new Date().getTime() / 1000,
+        // à quelle moment le token expire
+        exp: (new Date().getTime() / 1000) + 300,
+    }, process.env.JWT_SECRET!);
+
+    console.log(accessToken);
+    
+
+    response.send({
+        accessToken: ''
+    });
 });
 
 userRouter.get('/:id', async (request, response, next) => {
