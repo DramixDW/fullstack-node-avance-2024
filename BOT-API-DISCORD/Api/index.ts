@@ -27,7 +27,7 @@ export function initApi() {
     application.use(json());
     application.use(loggerMiddleware);
     application.use('/assets', express.static(__dirname + '/assets'));
-    application.use('/static', express.static(__dirname + '/uploads'));
+    application.use('/static', express.static(process.cwd() + '/uploads'));
     application.use('/sounds', soundRouter);
     application.use('/users', userRouter);
     application.use('/auth', authRouter);
