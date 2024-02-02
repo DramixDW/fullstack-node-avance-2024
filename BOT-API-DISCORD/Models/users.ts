@@ -21,6 +21,11 @@ export class User {
     public declare lastName: string;
 
     @Column({
+        length: 60
+    })
+    public declare password: string;
+
+    @Column({
         type: 'enum',
         enum: Object.values(Role)
     })

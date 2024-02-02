@@ -9,11 +9,15 @@ export async function seeder() {
     const users = manager.create(User, [{
         firstName: 'Dramix',
         lastName: 'Otter',
-        role: Role.ADMIN
+        role: Role.ADMIN,
+        // mot de passe HASHE (potato)
+        password: '$2b$12$TS7w9XaC7BEe4njDbI6Uye90X4BO7Pb7zZGa9zDuN20Lw/WuKJQ9C'
     }, {
         firstName: 'Seb',
         lastName: 'Goat',
-        role: Role.USER
+        role: Role.USER,
+        // mot de passe HASHE (potato)
+        password: '$2b$12$TS7w9XaC7BEe4njDbI6Uye90X4BO7Pb7zZGa9zDuN20Lw/WuKJQ9C'
     }]);
 
     const categories = manager.create(Category, [

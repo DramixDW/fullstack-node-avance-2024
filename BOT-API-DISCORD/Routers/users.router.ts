@@ -20,7 +20,11 @@ userRouter.get('/list', async (request, response) => {
             return "";
         }
    })
-})
+});
+
+userRouter.get('/login', async (request, response) => {
+    return response.render('login_page', {});
+});
 
 userRouter.get('/:id', async (request, response, next) => {
     try {
