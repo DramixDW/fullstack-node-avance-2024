@@ -10,6 +10,7 @@ import { userRouter } from "./Routers/users.router";
 import { DatabaseConnection } from "./Database/connection";
 import { config } from "dotenv";
 import { authRouter } from "./Routers/auth.router";
+import cookieParser from 'cookie-parser';
 
 // classes => PascalCase
 // function => camelCase
@@ -37,6 +38,7 @@ async function init() {
     application.set('view engine', 'mustache');
     application.set('views', './Views');
     
+    application.use(cookieParser());
     application.use(json());
     application.use(loggerMiddleware);
     application.use('/assets', express.static(__dirname + '/assets'));
