@@ -28,4 +28,6 @@ form.addEventListener("submit", async function (e) {
     const json = await response.json();
 
     localStorage.setItem("accessToken", json.accessToken);
+
+    location.href = "/sounds/list"
 });
