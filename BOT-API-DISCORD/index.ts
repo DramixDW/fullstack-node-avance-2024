@@ -13,6 +13,7 @@ import { authRouter } from "./Api/Routers/auth.router";
 import cookieParser from 'cookie-parser';
 import { seeder } from "./Core/Database/seeder";
 import { rateLimit } from 'express-rate-limit';
+import { initApi } from "./Api";
 
 // classes => PascalCase
 // function => camelCase
@@ -20,9 +21,7 @@ import { rateLimit } from 'express-rate-limit';
 // constantes => SCREAMING_SNAKE_CASE
 // fichiers => kebab | camelCase | Pascal | ...
 
-const PORT = 8081;
-
-async function init() {
+async function initApplication() {
     config({
         path: 'development.env'
     });
@@ -40,38 +39,9 @@ async function init() {
     }else{
         await databaseInstance.synchronize();
     }
-    
-    const application: Application = express();
-    
-    application.engine('mustache', mustacheExpress());
-    application.set('view engine', 'mustache');
-    application.set('views', './Views');
-    
-    application.use(rateLimit({
-        limit: 20,
-        windowMs: 10 * 1000
-    }))
-    application.use(cookieParser());
-    application.use(json());
-    application.use(loggerMiddleware);
-    application.use('/assets', express.static(__dirname + '/assets'));
-    application.use('/static', express.static(__dirname + '/uploads'));
-    application.use('/sounds', soundRouter);
-    application.use('/users', userRouter);
-    application.use('/auth', authRouter);
-    
-    //override le comportement par défaut pour la 404
-    application.use((request, response, next) => {
-        throw new NotFoundError();
-    })
-    application.use(notFoundErrorHandler);
-    application.use(internalServerErrorHandler);
-    
-    
-    application.listen(PORT, () => {
-        console.log(`Prêt et à l\'écoute sur http://localhost:${PORT}`);
-    })
+
+    await initApi();
 }
 
 
-init();
+initApplication();
