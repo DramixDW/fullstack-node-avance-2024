@@ -62,10 +62,7 @@
 
             const id = event.target.getAttribute('data-id');
             const response = await fetch(`http://localhost:8081/sounds/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
+                method: 'DELETE'
             });
 
 

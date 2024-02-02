@@ -4,16 +4,15 @@ import { verify } from "jsonwebtoken";
 
 export function createAuthorizeMiddleWare(roles: string[]): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
-        const token = request.headers.authorization;
+        const token = request.cookies.accessToken;
+    
 
         if (!token) {
             return response.status(401).send("Unauthorized");
         }
 
-        const [, accessToken] = token.split(" ");
-
         try {
-            const accessTokenDecoded = verify(accessToken, process.env.JWT_SECRET!, {
+            const accessTokenDecoded = verify(token, process.env.JWT_SECRET!, {
                 complete: true
             });
 

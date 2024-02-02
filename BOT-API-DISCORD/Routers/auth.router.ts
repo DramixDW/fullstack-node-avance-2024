@@ -38,6 +38,11 @@ authRouter.post('/login',async (request, response, next) => {
         exp: Math.floor((new Date().getTime() / 1000) + 300),
     }, process.env.JWT_SECRET!);
 
+    response.cookie('accessToken', accessToken, {
+        expires: new Date(Date.now() + 300000),
+        httpOnly: true
+    });
+
     response.send({
         accessToken
     });

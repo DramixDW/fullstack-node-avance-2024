@@ -12,6 +12,7 @@ form.addEventListener("submit", async function (e) {
             username,
             password
         }),
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
