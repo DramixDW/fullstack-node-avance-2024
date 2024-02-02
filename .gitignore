@@ -1,3 +1,5 @@
 node_modules/
-Logs
+Logs/*
+!Logs/.gitkeep
 *.env
+!example.env
