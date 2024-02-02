@@ -4,6 +4,7 @@ import { sign } from "jsonwebtoken";
 import { DatabaseConnection } from "../Database/connection";
 import { User } from "../Models/users";
 import { EntityNotFoundError } from "../Errors/entity-not-found.error";
+import rateLimit from "express-rate-limit";
 
 const authRouter = Router();
 
@@ -13,7 +14,12 @@ authRouter.get('/login', async (request, response) => {
 });
 
 // authentication
-authRouter.post('/login',async (request, response, next) => {
+authRouter.post('/login', 
+    rateLimit({
+        limit: 1,
+        windowMs: 1 * 1000
+    }),
+async (request, response, next) => {
     const { username , password } = request.body;
 
     const user = await DatabaseConnection.manager.findOne(User, {

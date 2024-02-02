@@ -12,6 +12,7 @@ import { config } from "dotenv";
 import { authRouter } from "./Routers/auth.router";
 import cookieParser from 'cookie-parser';
 import { seeder } from "./Database/seeder";
+import { rateLimit } from 'express-rate-limit';
 
 // classes => PascalCase
 // function => camelCase
@@ -32,7 +33,7 @@ async function init() {
 
     if (process.env.DB_REFRESH === "true") {
         console.log("Refreshing de la DB ...");
-        
+
         await databaseInstance.dropDatabase();
         await databaseInstance.synchronize();
         await seeder();
@@ -46,6 +47,10 @@ async function init() {
     application.set('view engine', 'mustache');
     application.set('views', './Views');
     
+    application.use(rateLimit({
+        limit: 20,
+        windowMs: 10 * 1000
+    }))
     application.use(cookieParser());
     application.use(json());
     application.use(loggerMiddleware);
