@@ -38,9 +38,9 @@ export class DatabaseConnection {
         const connection = new DataSource({
             host: 'localhost',
             port: 3306,
-            database: process.env.DATABASE,
-            username: process.env.USERNAME,
-            password: process.env.PASSWORD,
+            database: process.env.DB_DATABASE,
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
             type: 'mysql',
             entities: ["Models/*.ts"]
         });
