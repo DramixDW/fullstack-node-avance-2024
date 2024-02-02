@@ -9,6 +9,10 @@ main > form {
     margin: auto;
 }
 
+#errors {
+    color: chartreuse;
+}
+
 button {
     margin-top: 2em;
 }

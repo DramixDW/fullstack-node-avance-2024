@@ -5,6 +5,7 @@ import { getAllCategories } from "../Database/categories";
 import { createSound, deleteSound, getAllSounds, getSoundById, replaceSound } from "../Database/sounds";
 import { createAuthorizeMiddleWare } from "../Middlewares/authorize.middleware";
 import { FileValidationMiddleware } from "../Middlewares/file-validation.middleware";
+import { Role } from "../Models/users";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -101,7 +102,7 @@ soundRouter.post('/:id', configuredMulter.single('sound'), async (request, respo
     response.redirect('/sounds/list');
 });
 
-soundRouter.delete('/:id', async (request, response) => {
+soundRouter.delete('/:id', createAuthorizeMiddleWare([Role.ADMIN, Role.USER]), async (request, response) => {
     await deleteSound(request.params.id);
     response.status(204).send(null);
 })

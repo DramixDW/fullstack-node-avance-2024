@@ -6,9 +6,7 @@ form.addEventListener("submit", async function (e) {
     const username = data.get('username');
     const password = data.get('password');
 
-    console.log(username, password);
-
-    await fetch("http://localhost:8081/users/login", {
+    const response = await fetch("http://localhost:8081/auth/login", {
         method: 'POST',
         body: JSON.stringify({
             username,
@@ -18,4 +16,15 @@ form.addEventListener("submit", async function (e) {
             'Content-Type': 'application/json'
         }
     });
+
+    if (response.status !== 200) {
+        const errorsP = document.querySelector("#errors");
+
+        errorsP.innerHTML = "L'utilisateur ou le mot de passe incorrect";
+        return;
+    }
+
+    const json = await response.json();
+
+    localStorage.setItem("accessToken", json.accessToken);
 });

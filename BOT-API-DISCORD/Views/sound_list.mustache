@@ -57,14 +57,24 @@
 <script>
     const buttons = document.querySelectorAll("[data-id]");
     for (const button of buttons) {
-        button.addEventListener("click", (event) => {
+        button.addEventListener("click", async (event) => {
+            const accessToken = localStorage.getItem("accessToken");
+
             const id = event.target.getAttribute('data-id');
-            fetch(`http://localhost:8081/sounds/${id}`, {
+            const response = await fetch(`http://localhost:8081/sounds/${id}`, {
                 method: 'DELETE',
-            }).then(() => {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+
+            if (response.status < 400) {
                 // location.href = url de la page actuel
                 location.href = location.href;
-            })
+            }else{
+                console.log('Une erreur est survenue');
+            }
         })
     }
 </script>

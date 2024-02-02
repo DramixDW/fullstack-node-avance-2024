@@ -9,6 +9,7 @@ import mustacheExpress from "mustache-express";
 import { userRouter } from "./Routers/users.router";
 import { DatabaseConnection } from "./Database/connection";
 import { config } from "dotenv";
+import { authRouter } from "./Routers/auth.router";
 
 // classes => PascalCase
 // function => camelCase
@@ -42,6 +43,8 @@ async function init() {
     application.use('/static', express.static(__dirname + '/uploads'));
     application.use('/sounds', soundRouter);
     application.use('/users', userRouter);
+    application.use('/auth', authRouter);
+    
     //override le comportement par défaut pour la 404
     application.use((request, response, next) => {
         throw new NotFoundError();
