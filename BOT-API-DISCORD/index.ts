@@ -2,6 +2,7 @@ import { DatabaseConnection } from "./Core/Database/connection";
 import { config } from "dotenv";
 import { seeder } from "./Core/Database/seeder";
 import { initApi } from "./Api";
+import { initBot } from "./Bot";
 
 // classes => PascalCase
 // function => camelCase
@@ -28,6 +29,7 @@ async function initApplication() {
         await databaseInstance.synchronize();
     }
 
+    await initBot();
     await initApi();
 }
 
