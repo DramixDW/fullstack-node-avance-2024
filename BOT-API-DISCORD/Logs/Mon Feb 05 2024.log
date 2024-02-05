@@ -19,3 +19,16 @@
 9-39 : GET /auth/login anonymous
 9-39 : GET /assets/login.js anonymous
 9-39 : GET /assets/style.css anonymous
+15-54 : GET / anonymous
+15-54 : GET /auth/login anonymous
+15-54 : GET /assets/style.css anonymous
+15-54 : GET /assets/login.js anonymous
+15-54 : POST /auth/login anonymous
+15-54 : GET /sounds/list anonymous
+15-54 : POST /sounds/ anonymous
+15-54 : GET /sounds/list anonymous
+15-54 : GET /static/discord-notification-1707144894409.mp3 anonymous
+16-3 : POST /sounds/ anonymous
+16-3 : GET /sounds/list anonymous
+16-3 : GET /static/discord-notification-1707144894409.mp3 anonymous
+16-3 : GET /static/poulette-1707145408700.mp3 anonymous

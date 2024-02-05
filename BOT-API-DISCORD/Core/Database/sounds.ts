@@ -29,6 +29,17 @@ export async function getSoundById(id: string) {
     return sound;
 }
 
+// get sound by any property
+export async function getSoundBy(property: keyof Sound, value: string) {
+    const sound = await DatabaseConnection.manager.findOne(Sound, {
+        where: {
+            [property]: value
+        }
+    });
+
+    return sound;
+} 
+
 export async function deleteSound (id: string) {
     const sound = await getSoundById(id);
     await DatabaseConnection.manager.delete(Sound, sound);

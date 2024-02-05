@@ -3,6 +3,8 @@ import { ApplicationCommandOptionType, CommandInteraction, GuildMember, SlashCom
 import { createReadStream } from "fs";
 import { join } from "path";
 import { setTimeout } from "timers/promises";
+import { DatabaseConnection } from "../../Core/Database/connection";
+import { getSoundBy } from "../../Core/Database/sounds";
 
 export const commandName = "play";
 
@@ -23,10 +25,18 @@ export async function execute(interaction: CommandInteraction) {
     const guildId = interaction.guildId;
 
     // on récupère l'argument
-    console.log(interaction.options.get('sound'))
+    const soundName = interaction.options.get('sound')?.value as string;
 
+    
     if (!channelId || !guildId) {
         return interaction.reply("Veuillez-vous connecter dans un channel pour cette commande");
+    }
+
+    const sound = await getSoundBy('name', soundName);
+
+
+    if (!sound) {
+        return interaction.reply("Le son n'a pas été trouvé");
     }
 
     const voice = joinVoiceChannel({
@@ -48,7 +58,11 @@ export async function execute(interaction: CommandInteraction) {
     });
 
     // ressource audio à jouer
-    const audioResource = createAudioResource(createReadStream(join(process.cwd(), 'uploads' , 'discord-notification-1706786962726.mp3')));
+    const audioResource = createAudioResource(
+        createReadStream(
+            join(process.cwd(), 'uploads' , sound.file)
+        )
+    );
 
     audioResource.playStream.on("error", (e) => {
         console.log("Une erreur est survenue", e);
