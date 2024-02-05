@@ -1,0 +1,3 @@
+9-32 : GET / anonymous
+9-32 : GET /favicon.ico anonymous
+9-33 : GET /auth/login anonymous
