@@ -1,12 +1,20 @@
 import { NoSubscriberBehavior, createAudioPlayer, createAudioResource, joinVoiceChannel } from "@discordjs/voice";
-import { CommandInteraction, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember, SlashCommandBuilder } from "discord.js";
 import { createReadStream } from "fs";
 import { join } from "path";
 import { setTimeout } from "timers/promises";
 
 export const commandName = "play";
-export const description = "Play a sound";
-export const enableInDM = false;
+
+export const builder = (builder: SlashCommandBuilder) => {
+    return builder.setDescription('Joue un son')
+        .addStringOption((o) => {
+            return o
+                .setName('sound')
+                .setDescription('Le nom du son')
+                .setRequired(true)
+        })
+}
 
 // execution de la commande
 export async function execute(interaction: CommandInteraction) {

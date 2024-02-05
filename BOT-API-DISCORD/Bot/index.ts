@@ -7,7 +7,7 @@ import { registerCommands } from './register-commands';
 export interface Command {
     commandName: string;
     enableInDM: boolean;
-    description: string;
+    builder: (b: SlashCommandBuilder) => SlashCommandBuilder;
     execute: (interaction: CommandInteraction) => Promise<unknown> 
 }
 

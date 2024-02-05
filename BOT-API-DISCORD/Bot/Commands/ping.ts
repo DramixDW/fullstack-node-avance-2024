@@ -1,8 +1,11 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 export const commandName = "ping";
-export const description = "Makes me ping";
-export const enableInDM = false;
+
+export const builder = (builder: SlashCommandBuilder) => {
+    return builder.setDescription('Makes me ping');
+}
+
 
 // execution de la commande
 export async function execute(interaction: CommandInteraction) {
