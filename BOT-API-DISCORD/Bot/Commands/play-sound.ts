@@ -22,6 +22,8 @@ export async function execute(interaction: CommandInteraction) {
     const channelId = channel.channelId;
     const guildId = interaction.guildId;
 
+    console.log(interaction.options.get('sound'))
+
     if (!channelId || !guildId) {
         return interaction.reply("Veuillez-vous connecter dans un channel pour cette commande");
     }

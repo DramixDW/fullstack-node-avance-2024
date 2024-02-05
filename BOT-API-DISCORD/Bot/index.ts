@@ -6,7 +6,7 @@ import { registerCommands } from './register-commands';
 // structure d'une commande
 export interface Command {
     commandName: string;
-    enableInDM: boolean;
+    // fonction qui renvoie un builder
     builder: (b: SlashCommandBuilder) => SlashCommandBuilder;
     execute: (interaction: CommandInteraction) => Promise<unknown> 
 }
