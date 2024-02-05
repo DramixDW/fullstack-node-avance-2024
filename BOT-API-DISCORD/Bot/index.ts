@@ -33,7 +33,14 @@ export async function initBot() {
     // lorsqu'une commande interragit avec notre bot
     client.on('interactionCreate', async (interaction) => {
         if (interaction.isCommand()) {
+            const command = commands.find((c) => c.commandName === interaction.commandName);
+
+            if (command) {
+                await command.execute(interaction);
+                return;
+            }
             
+            await interaction.reply("Command Not found :(");
         }
     });
 
