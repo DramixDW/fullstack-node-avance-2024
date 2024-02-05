@@ -30,7 +30,7 @@ async function initApplication() {
     }
 
     await initBot();
-    await initApi();
+    initApi();
 }
 
 

@@ -10,7 +10,7 @@ async function registerCommands() {
             .setName('ping')
             .setDescription('Ping me daddy')
         ]
-    })
+    });
 }
 
 
@@ -23,6 +23,19 @@ export async function initBot() {
 
     client.on('ready', () => {
         console.log("Le bot est connecté à Discord");
+    });
+
+    // lorsqu'une commande interragit avec notre bot
+    client.on('interactionCreate', async (interaction) => {
+        if (interaction.isCommand()) {
+            if (interaction.commandName === "ping") {
+                await interaction.reply({
+                    content: "Pong",
+                    // message lisible que par vous
+                    ephemeral: true
+                });
+            } 
+        }
     });
 
     await client.login(process.env.BOT_TOKEN);
