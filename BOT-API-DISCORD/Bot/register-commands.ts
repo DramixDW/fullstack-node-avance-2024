@@ -9,6 +9,7 @@ export async function registerCommands(commands: Command[]) {
         new SlashCommandBuilder()
             .setName(c.commandName)
             .setDescription(c.description)
+            .setDMPermission(c.enableInDM)
     ));
 
     await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID!), {

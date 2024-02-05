@@ -6,6 +6,7 @@ import { registerCommands } from './register-commands';
 // structure d'une commande
 export interface Command {
     commandName: string;
+    enableInDM: boolean;
     description: string;
     execute: (interaction: CommandInteraction) => Promise<unknown> 
 }
