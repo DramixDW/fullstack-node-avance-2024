@@ -2,6 +2,7 @@ import { rm } from "fs/promises";
 import { Sound } from "../Models/sounds";
 import { DatabaseConnection } from "./connection";
 import { EntityNotFoundError } from "../../Api/Errors/entity-not-found.error";
+import { Like } from "typeorm";
 
 export async function getAllSounds (relations: string[] = []) {
     return DatabaseConnection.manager.find(Sound, {
@@ -39,6 +40,18 @@ export async function getSoundBy(property: keyof Sound, value: string) {
 
     return sound;
 } 
+
+export async function searchSound(value: string) {
+    const sounds = await DatabaseConnection.manager.find(Sound,{
+        where: {
+            name: Like(`${value}%`)
+        },
+        // 25 max, discord en affichera pas plus
+        take: 25
+    });
+
+    return sounds;
+}
 
 export async function deleteSound (id: string) {
     const sound = await getSoundById(id);

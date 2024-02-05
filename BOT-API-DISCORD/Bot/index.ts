@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
+import { AutocompleteInteraction, Client, CommandInteraction, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
 import { REST } from 'discord.js';
 import { readdir } from 'fs/promises';
 import { registerCommands } from './register-commands';
@@ -7,8 +7,9 @@ import { registerCommands } from './register-commands';
 export interface Command {
     commandName: string;
     // fonction qui renvoie un builder
+    autocomplete?: (autocomplete: AutocompleteInteraction) => Promise<unknown>;
     builder: (b: SlashCommandBuilder) => SlashCommandBuilder;
-    execute: (interaction: CommandInteraction) => Promise<unknown> 
+    execute: (interaction: CommandInteraction) => Promise<unknown>;
 }
 
 export async function initBot() {
@@ -34,6 +35,23 @@ export async function initBot() {
 
     // lorsqu'une commande interragit avec notre bot
     client.on('interactionCreate', async (interaction) => {
+        if (interaction.isAutocomplete()) {
+            const command = commands.find((c) => c.commandName === interaction.commandName);
+
+            if (!command) {
+                return interaction.respond([]);
+            }
+
+            if (!command.autocomplete) {
+                console.error("Un autocomplete n'a pas été trouvé pour la commande : ", command.commandName);
+                return interaction.respond([]);
+            }
+
+            await command.autocomplete(interaction);
+
+            return;
+        }
+
         if (interaction.isCommand()) {
             const command = commands.find((c) => c.commandName === interaction.commandName);
 
