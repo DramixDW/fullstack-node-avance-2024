@@ -13,7 +13,8 @@ export interface Command {
 
 export async function initBot() {
     const client = new Client({ intents: [
-        GatewayIntentBits.Guilds
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildVoiceStates
     ] });
 
     const commands: Command[] = [];
