@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
 import { REST } from 'discord.js';
+import { readdir } from 'fs/promises';
 
 async function registerCommands() {
     const rest = new REST().setToken(process.env.BOT_TOKEN!);
@@ -19,6 +20,18 @@ export async function initBot() {
         GatewayIntentBits.Guilds
     ] });
 
+    const commands = [];
+
+    const commandFiles = await readdir(__dirname + "/Commands");
+
+    for (const file of commandFiles) {
+        const imp = await import(`${__dirname}/Commands/${file}`);
+
+        console.log(imp);
+        
+    }
+    
+
     await registerCommands();
 
     client.on('ready', () => {
@@ -28,13 +41,7 @@ export async function initBot() {
     // lorsqu'une commande interragit avec notre bot
     client.on('interactionCreate', async (interaction) => {
         if (interaction.isCommand()) {
-            if (interaction.commandName === "ping") {
-                await interaction.reply({
-                    content: "Pong",
-                    // message lisible que par vous
-                    ephemeral: true
-                });
-            } 
+            
         }
     });
 
