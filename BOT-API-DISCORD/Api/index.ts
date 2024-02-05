@@ -17,7 +17,8 @@ export function initApi() {
     
     application.engine('mustache', mustacheExpress());
     application.set('view engine', 'mustache');
-    application.set('views', './Views');
+    // attention . => chemin par rapport à l'endroit de l'éxécution du programme
+    application.set('views', './Api/Views');
     
     application.use(rateLimit({
         limit: 20,
