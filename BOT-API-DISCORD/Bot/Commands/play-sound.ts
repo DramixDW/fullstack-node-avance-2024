@@ -22,6 +22,7 @@ export async function execute(interaction: CommandInteraction) {
     const channelId = channel.channelId;
     const guildId = interaction.guildId;
 
+    // on récupère l'argument
     console.log(interaction.options.get('sound'))
 
     if (!channelId || !guildId) {
