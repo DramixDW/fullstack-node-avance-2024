@@ -19,3 +19,9 @@
 **/
 
 1. Créer l'interface de login pour que les utilisateurs puissent se connecter.
+
+# Exercice 4
+
+Faire une recherche du son par rapport l'argument 'sound' de la commande. Et ensuite jouer le son trouvé. Travaillez avec la DB.
+
+ex: /play homer => jouer le son de homer
