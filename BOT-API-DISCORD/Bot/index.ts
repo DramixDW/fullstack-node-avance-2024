@@ -1,29 +1,14 @@
 import { Client, CommandInteraction, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
 import { REST } from 'discord.js';
 import { readdir } from 'fs/promises';
+import { registerCommands } from './register-commands';
 
 // structure d'une commande
-interface Command {
+export interface Command {
     commandName: string;
     description: string;
     execute: (interaction: CommandInteraction) => Promise<unknown> 
 }
-
-async function registerCommands(commands: Command[]) {
-    const rest = new REST().setToken(process.env.BOT_TOKEN!);
-
-    // on construit notre tableau de commandes slash
-    const slashCommands = commands.map((c) => (
-        new SlashCommandBuilder()
-            .setName(c.commandName)
-            .setDescription(c.description)
-    ));
-
-    await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID!), {
-        body: slashCommands
-    });
-}
-
 
 export async function initBot() {
     const client = new Client({ intents: [
@@ -39,7 +24,6 @@ export async function initBot() {
         commands.push(imp);
     }
     
-
     await registerCommands(commands);
 
     client.on('ready', () => {
