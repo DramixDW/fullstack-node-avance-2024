@@ -1,16 +1,26 @@
-import { Client, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
+import { Client, CommandInteraction, GatewayIntentBits, Routes, SlashCommandBuilder } from 'discord.js';
 import { REST } from 'discord.js';
 import { readdir } from 'fs/promises';
 
-async function registerCommands() {
+// structure d'une commande
+interface Command {
+    commandName: string;
+    description: string;
+    execute: (interaction: CommandInteraction) => Promise<unknown> 
+}
+
+async function registerCommands(commands: Command[]) {
     const rest = new REST().setToken(process.env.BOT_TOKEN!);
 
+    // on construit notre tableau de commandes slash
+    const slashCommands = commands.map((c) => (
+        new SlashCommandBuilder()
+            .setName(c.commandName)
+            .setDescription(c.description)
+    ));
+
     await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID!), {
-        body: [
-            new SlashCommandBuilder()
-            .setName('ping')
-            .setDescription('Ping me daddy')
-        ]
+        body: slashCommands
     });
 }
 
@@ -20,19 +30,17 @@ export async function initBot() {
         GatewayIntentBits.Guilds
     ] });
 
-    const commands = [];
+    const commands: Command[] = [];
 
     const commandFiles = await readdir(__dirname + "/Commands");
 
     for (const file of commandFiles) {
         const imp = await import(`${__dirname}/Commands/${file}`);
-
-        console.log(imp);
-        
+        commands.push(imp);
     }
     
 
-    await registerCommands();
+    await registerCommands(commands);
 
     client.on('ready', () => {
         console.log("Le bot est connecté à Discord");
