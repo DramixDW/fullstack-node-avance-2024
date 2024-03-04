@@ -3,24 +3,7 @@ import { DatabaseConnection } from "../Core/Database/connection";
 import { deleteUser, getUserById, insertUser } from "../Core/Database/users";
 import { Role, User } from "../Core/Models/users";
 import { EntityNotFoundError } from "../Api/Errors/entity-not-found.error";
-
-async function seedForTesting() {
-    const connection = DatabaseConnection.getConnection();
-    // TRUNCATE TABLE 
-    await connection.dropDatabase();
-    await connection.synchronize();
-    
-    const userForTest = connection.getRepository(User).create({
-        id: 'timmy',
-        username: 'Dramix',
-        lastName: 'Banane',
-        firstName: 'Loutre',
-        role: Role.ADMIN,
-        password: 'sjflkdjsflkdj'
-    });
-
-    await connection.getRepository(User).save(userForTest);
- }
+import { seedForTesting } from "./seed-for-testing";
 
 beforeEach(async () => {
     config({
