@@ -3,7 +3,6 @@ import { DatabaseConnection } from "../Core/Database/connection";
 import { deleteUser, getUserById, insertUser } from "../Core/Database/users";
 import { Role, User } from "../Core/Models/users";
 import { EntityNotFoundError } from "../Api/Errors/entity-not-found.error";
-import { exec } from "child_process";
 
 async function seedForTesting() {
     const connection = DatabaseConnection.getConnection();
