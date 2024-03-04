@@ -1,15 +1,32 @@
 import { config } from "dotenv";
 import { DatabaseConnection } from "../Core/Database/connection";
 import { getUserById } from "../Core/Database/users";
+import { Role, User } from "../Core/Models/users";
+
+async function seedForTesting() {
+    const connection = DatabaseConnection.getConnection();
+
+    const userForTest = connection.getRepository(User).create({
+        id: 'timmy',
+        username: 'Dramix',
+        lastName: 'Banane',
+        firstName: 'Loutre',
+        role: Role.ADMIN,
+        password: 'sjflkdjsflkdj'
+    });
+
+    await connection.getRepository(User).save(userForTest);
+ }
 
 it('fetch users', async () => {
     config({
         path: 'development.env'
     });
     await DatabaseConnection.init();
-    const user = await getUserById('56221d00-49b7-4f59-8f53-6d037154f5d4');
+    await seedForTesting();
+    const user = await getUserById('timmy');
 
-    expect(user).toHaveProperty('firstName', 'Dramix');
+    expect(user).toHaveProperty('firstName', 'Loutre');
 
     await DatabaseConnection.closeConnection();
 });

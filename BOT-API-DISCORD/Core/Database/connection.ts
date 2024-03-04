@@ -42,6 +42,7 @@ export class DatabaseConnection {
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
             type: 'mysql',
+            logging: true,
             entities: ["Core/Models/*.ts"]
         });
         
