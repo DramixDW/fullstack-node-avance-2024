@@ -41,7 +41,9 @@ export function initApi() {
     application.use(internalServerErrorHandler);
     
     
-    application.listen(PORT, () => {
+    const httpServer = application.listen(PORT, () => {
         console.log(`Prêt et à l\'écoute sur http://localhost:${PORT}`);
-    })
+    });
+
+    return httpServer;
 }
